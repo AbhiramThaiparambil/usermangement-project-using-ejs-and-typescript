@@ -30,11 +30,17 @@ exports.adminRoute = void 0;
 const express_1 = __importDefault(require("express"));
 const nocache_1 = __importDefault(require("nocache"));
 const express_session_1 = __importDefault(require("express-session"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const adminController = __importStar(require("../controller/admin_controller")); // Use named import
 const auth = __importStar(require("../middleware/adminAuth"));
+const path_1 = __importDefault(require("path"));
 const adminRoute = (0, express_1.default)();
 exports.adminRoute = adminRoute;
 adminRoute.use((0, nocache_1.default)());
+adminRoute.set("view engine", "ejs");
+adminRoute.set("views", path_1.default.join(__dirname, "../../src/view"));
+adminRoute.use(body_parser_1.default.json());
+adminRoute.use(body_parser_1.default.urlencoded({ extended: true }));
 adminRoute.use((0, express_session_1.default)({
     secret: 'your-secret-key',
     resave: false,

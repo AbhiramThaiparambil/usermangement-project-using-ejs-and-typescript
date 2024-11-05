@@ -28,19 +28,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRoute = void 0;
 const express_1 = __importDefault(require("express"));
+const express_session_1 = __importDefault(require("express-session"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const user_controller = __importStar(require("../controller/user_controller"));
+// import * as auth from  "../middleware/auth";
+const path_1 = __importDefault(require("path"));
 const userRoute = (0, express_1.default)();
 exports.userRoute = userRoute;
 require("express-session");
-// userRoute.use(
-//   session({
-//     secret: "mysitesecretcode",
-//     resave: true,
-//     saveUninitialized: false,
-//   })
-// );
-// userRoute.use(bodyParser.json());
-// userRoute.use(bodyParser.urlencoded({ extended: true }));
+userRoute.set("view engine", "ejs"); // Set EJS as the default view engine
+userRoute.set("views", path_1.default.join(__dirname, "../../src/view"));
+userRoute.use((0, express_session_1.default)({
+    secret: "mysitesecretcode",
+    resave: true,
+    saveUninitialized: false,
+}));
+userRoute.use(body_parser_1.default.json());
+userRoute.use(body_parser_1.default.urlencoded({ extended: true }));
 // // setting ejs
 userRoute.get("/", user_controller.loadRegister);
 //showing first page

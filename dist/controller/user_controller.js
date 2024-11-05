@@ -28,7 +28,6 @@ const securepassword = (password) => __awaiter(void 0, void 0, void 0, function*
 //    first get registration form
 const loadRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log('--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------------------');
         res.render('signUp');
     }
     catch (error) {
@@ -40,6 +39,7 @@ exports.loadRegister = loadRegister;
 const regRoute = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password } = req.body;
+        console.log(name, email, password);
         const spassword = yield securepassword(password);
         const user = new userModel_1.default({
             name,

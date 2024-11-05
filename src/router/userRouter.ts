@@ -8,21 +8,23 @@ import path from 'path';
 const userRoute = express();
 import 'express-session';
 
+userRoute.set("view engine", "ejs"); // Set EJS as the default view engine
+
+userRoute.set("views", path.join(__dirname, "../../src/view"));
 
 
 
 
+userRoute.use(
+  session({
+    secret: "mysitesecretcode",
+    resave: true,
+    saveUninitialized: false,
+  })
+);
 
-// userRoute.use(
-//   session({
-//     secret: "mysitesecretcode",
-//     resave: true,
-//     saveUninitialized: false,
-//   })
-// );
-
-// userRoute.use(bodyParser.json());
-// userRoute.use(bodyParser.urlencoded({ extended: true }));
+userRoute.use(bodyParser.json());
+userRoute.use(bodyParser.urlencoded({ extended: true }));
 // // setting ejs
 
 

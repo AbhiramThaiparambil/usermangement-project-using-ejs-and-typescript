@@ -15,19 +15,7 @@ const app = express();
 
 
 
-const viewsPath = process.env.NODE_ENV === 'production'
-? path.join(__dirname, 'view')  // For production, assuming views are in dist/views
-: path.join(__dirname, '../src/view');  // For development, assuming views are in src/views
 
-app.set('view engine', 'ejs');  // Set EJS as the default view engine
-
-app.set('views', path.join(__dirname, '../src/view'));
-
-
-
-console.log('--------------------------------------------------------------------------');
-
-console.log(path.join(__dirname,'../src/views'));
 
 
 

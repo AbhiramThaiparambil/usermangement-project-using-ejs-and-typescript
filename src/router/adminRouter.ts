@@ -10,8 +10,12 @@ const adminRoute = express();
 
 adminRoute.use(nocache()); 
 
+adminRoute.set("view engine", "ejs"); 
+adminRoute.set("views", path.join(__dirname, "../../src/view"));
 
 
+adminRoute.use(bodyParser.json());
+adminRoute.use(bodyParser.urlencoded({ extended: true }));
 
 adminRoute.use(
   session({

@@ -18,7 +18,6 @@ const securepassword = async (password:string) => {
 //    first get registration form
 const loadRegister = async (req:Request, res:Response):Promise<void> => {
   try {
-    console.log('--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------------------');
 
  res.render('signUp'); 
 
@@ -30,6 +29,9 @@ const loadRegister = async (req:Request, res:Response):Promise<void> => {
 const regRoute = async (req:Request, res:Response):Promise<void> => {
   try {
     const { name, email, password } = req.body;
+
+    console.log(name,email,password);
+    
     const spassword = await securepassword(password);
    
     const user = new User({
