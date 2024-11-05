@@ -1,0 +1,98 @@
+<%- include("../header") %>
+
+<section class="vh-100 gradient-custom" style="background: linear-gradient(45deg, #1b1b1b, #383838);">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-lg text-white" style="border-radius: 1rem; background-color: rgba(0, 0, 0, 0.75);">
+          <div class="p-5 text-center">
+            <div class="mb-md-5 mt-md-4 pb-5">
+              <h2 class="fw-bold mb-3 text-uppercase" style="letter-spacing: 2px;">Update Profile</h2>
+              <p class="text-white-50 mb-5">Update your login credentials below.</p>
+
+              <form action="/update" method="POST" id="updateForm">
+
+                <div class="form-outline form-white mb-4">
+                  <div id="nameError" style="font-size: 0.9em; color: #ff6666;">&nbsp;</div>
+                  <input type="text" id="typeNameX" class="form-control form-control-lg" onkeyup="validateName()" name="update_name"
+                    <% if (typeof user_data !== 'undefined' && typeof user_data.name !== 'undefined') { %>
+                      value="<%= user_data.name %>"
+                    <% } %>
+                    required placeholder="Enter your name" style="background: rgba(255, 255, 255, 0.1); color: #fff;"/>
+                </div>
+
+                <div class="form-outline form-white mb-4">
+                  <div id="emailError" style="font-size: 0.9em; color: #ff6666;">&nbsp;</div>
+                  <input type="email" id="typeEmailX" class="form-control form-control-lg" onkeyup="validateEmail()" name="update_email"
+                    <% if (typeof user_data !== 'undefined' && typeof user_data.email !== 'undefined') { %>
+                      value="<%= user_data.email %>"
+                    <% } %>
+                    required placeholder="Enter your email" style="background: rgba(255, 255, 255, 0.1); color: #fff;"/>
+                </div>
+
+                <input type="hidden" id="updateId" name="update_id"
+                  <% if (typeof user_data !== 'undefined' && typeof user_data._id !== 'undefined') { %>
+                    value="<%= user_data._id %>"
+                  <% } %>
+                  required />
+
+                <button class="btn btn-outline-light btn-lg px-5 mt-3 w-100" type="submit" style="border-radius: 0.75rem;">Update</button>
+              </form>
+
+              <% if (typeof a !== 'undefined') { %>
+                <div class="mt-4">
+                  <% if (a == 1) { %>
+                    <h6 class="fw-bold mb-2 text-danger">Email already exists. Try a new one.</h6>
+                  <% } else if (a == 2) { %>
+                    <h6 class="fw-bold mb-2 text-warning">No changes detected in user data.</h6>
+                  <% } %>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function validateEmail() {
+    const email = document.getElementById('typeEmailX').value;
+    const error = document.getElementById('emailError');
+    const EMAIL_REGEX = /^[^\s@]+@gmail\.com$/i;
+
+    if (!EMAIL_REGEX.test(email)) {
+      error.innerHTML = 'Invalid email format';
+      error.style.color = '#ff6666';
+      return false;
+    } else {
+      error.innerHTML = 'Valid email';
+      error.style.color = '#66ff66';
+      return true;
+    }
+  }
+
+  function validateName() {
+    const NAME_REGEX = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+    const name = document.getElementById('typeNameX').value;
+    const nameError = document.getElementById('nameError');
+
+    if (!NAME_REGEX.test(name)) {
+      nameError.innerHTML = 'Enter a valid name';
+      nameError.style.color = '#ff6666';
+    } else {
+      nameError.innerHTML = 'Valid name';
+      nameError.style.color = '#66ff66';
+    }
+  }
+
+  document.getElementById('updateForm').addEventListener('submit', (e) => {
+    if (!validateEmail() || !validateName()) {
+      e.preventDefault();
+      alert('Please correct the highlighted errors before submitting.');
+    }
+  });
+</script>
+
+<%- include('../footer') %>

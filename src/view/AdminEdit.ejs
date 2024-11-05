@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #dfd0d0b6;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar {
+            width: 300px;
+        }
+        
+        .table-container {
+            margin-top: 80px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .table thead {
+            background-color: #f8f9fa;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .badge-role {
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .badge-admin {
+            background-color: #0d6efd;
+            color: white;
+        }
+        
+        .badge-user {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* Sweet Alert Customization */
+        .swal2-popup {
+            border-radius: 12px;
+        }
+        
+        .swal2-confirm {
+            padding: 8px 20px !important;
+        }
+        
+        .swal2-cancel {
+            padding: 8px 20px !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top px-4 py-2">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+               
+                <img  alt="">
+            </a>
+            
+            <!-- Search Bar -->
+            <div class="d-flex">
+                <input class="form-control search-bar" type="search" placeholder="Search users" id="Search">
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="d-flex gap-2">
+                <a href="/Adminhome2" class="btn btn-primary">Home</a>
+                <a href="/newuser" class="btn btn-success">Add User</a>
+                <button onclick="confirmLogout()" class="btn btn-danger">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Table -->
+    <div class="container table-container p-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < user.length; i++) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= user[i].name %></td>
+                        <td><%= user[i].email %></td>
+                        <td>
+                            <span class="badge-role <%= user[i].is_admin ? 'badge-admin' : 'badge-user' %>">
+                                <%= user[i].is_admin ? 'Admin' : 'User' %>
+                            </span>
+                        </td>
+                        <td>
+                            <button onclick="confirmEdit('<%=user[i]._id%>', '<%=user[i].name%>')" 
+                                    class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                            <button onclick="confirmDelete('<%=user[i]._id%>', '<%=user[i].name%>')" 
+                                    class="btn btn-sm btn-outline-danger">Delete</button>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.js"></script>
+    <script>
+        // Search functionality
+        const search = document.getElementById("Search");
+        search.addEventListener('keyup', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+
+        // Confirmation for delete action
+        function confirmDelete(userId, userName) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Do you want to delete user "${userName}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/deletUser?_id=${userId}`;
+                }
+            });
+        }
+
+        // Confirmation for edit action
+        function confirmEdit(userId, userName) {
+            Swal.fire({
+                title: 'Edit User',
+                text: `Do you want to edit user "${userName}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, edit',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/Useredit?_id=${userId}`;
+                }
+            });
+        }
+
+        // Confirmation for logout
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/logoutAdmin';
+                }
+            });
+        }
+
+        // Success message on page load (if needed)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there's a success message in URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const success = urlParams.get('success');
+            
+            if (success === 'deleted') {
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'User has been deleted successfully.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else if (success === 'updated') {
+                Swal.fire({
+                    title: 'Updated!',
+                    text: 'User has been updated successfully.',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>

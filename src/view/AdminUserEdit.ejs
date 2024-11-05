@@ -1,0 +1,195 @@
+<%-include("../header")%>
+<div  style="
+overflow-y: hidden; 
+background-image: url('background.img/Designer (4).jpeg'); 
+">
+<!-- Your content here -->
+>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <h2 class="mb-0">Edit User Profile</h2>
+                </div>
+                <div class="card-body p-5">
+                    <form action="/editedData" method="post" id="editForm">
+                        <!-- Name Field -->
+                        <div class="mb-4">
+                            <label for="name" class="form-label fw-bold">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-user text-primary"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       id="name" 
+                                       onkeyup="validateName()"
+                                       value="<%=userData.name%>"
+                                       name="updatedname"
+                                       placeholder="Enter full name">
+                            </div>
+                            <div id="nameError" class="form-text"></div>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </span>
+                                <input type="email" 
+                                       class="form-control form-control-lg" 
+                                       id="email" 
+                                       onkeyup="validateEmail()"
+                                       value="<%=userData.email%>"
+                                       required 
+                                       name="updatedemail"
+                                       placeholder="name@gmail.com">
+                            </div>
+                            <div id="emailError" class="form-text"></div>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock text-primary"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control form-control-lg" 
+                                       id="password"
+                                       value="<%=userData.email%>"
+                                       name="updatepassword"
+                                       placeholder="Enter password">
+                            </div>
+                            <div id="passwordError" class="form-text"></div>
+                        </div>
+
+                        <!-- Admin Checkbox -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" 
+                                       type="checkbox" 
+                                       value="1" 
+                                       name="admin" 
+                                       id="flexCheckDefault">
+                                <label class="form-check-label fw-bold" for="flexCheckDefault">
+                                    Admin Privileges
+                                </label>
+                            </div>
+                        </div>
+
+                        <input type="text" hidden value="<%=userData._id%>" name="id">
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+</div>
+<style>
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-right: none;
+}
+
+.form-control {
+    border-left: none;
+}
+
+
+.form-text.text-success {
+    background-color: #d4edda;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.form-text.text-danger {
+    background-color: #f8d7da;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
+}
+</style>
+
+<script>
+function validateEmail() {
+    const email = document.getElementById('email').value;
+    const error = document.getElementById('emailError');
+    const EMAIL_REGEX = /^[^\s@]+@gmail\.com$/i;
+
+    if (!EMAIL_REGEX.test(email)) {
+        error.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid Gmail address';
+        error.className = 'form-text text-danger';
+        return false;
+    } else {
+        error.innerHTML = '<i class="fas fa-check-circle"></i> Valid email address';
+        error.className = 'form-text text-success';
+        return true;
+    }
+}
+
+function validatePassword() {
+    const password = document.getElementById('password').value;
+    const error = document.getElementById('passwordError');
+    const PASSWORD_REGEX = /^[\w\d]{6,}$/;
+
+    if (!PASSWORD_REGEX.test(password)) {
+        error.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password must be at least 6 characters';
+        error.className = 'form-text text-danger';
+        return false;
+    } else {
+        error.innerHTML = '<i class="fas fa-check-circle"></i> Valid password';
+        error.className = 'form-text text-success';
+        return true;
+    }
+}
+
+function validateName() {
+    const name = document.getElementById('name').value;
+    const error = document.getElementById('nameError');
+    const NAME_REGEX = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+
+    if (!NAME_REGEX.test(name)) {
+        error.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid name';
+        error.className = 'form-text text-danger';
+        return false;
+    } else {
+        error.innerHTML = '<i class="fas fa-check-circle"></i> Valid name';
+        error.className = 'form-text text-success';
+        return true;
+    }
+}
+
+document.getElementById('editForm').addEventListener('submit', function(e) {
+    if (!validateName() || !validateEmail()) {
+        e.preventDefault();
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Details',
+            text: 'Please check your input and try again.',
+            confirmButtonColor: '#0d6efd'
+        });
+    }
+});
+</script>
+
+<%-include("../footer")%>

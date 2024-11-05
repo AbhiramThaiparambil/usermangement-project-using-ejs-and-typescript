@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Add SweetAlert2 CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@4/material-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .logout-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 360px;
+            transition: transform 0.2s;
+        }
+
+        .logout-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
+            color: #764ba2;
+        }
+
+        .admin-name {
+            color: #4a5568;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .admin-email {
+            color: #718096;
+            font-size: 0.875rem;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .message {
+            color: #2d3748;
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout {
+            background: #764ba2;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background: #593d7c;
+        }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-cancel:hover {
+            background: #cbd5e0;
+        }
+
+        /* Custom SweetAlert Styles */
+        .swal2-popup {
+            border-radius: 1rem;
+        }
+
+        .swal2-confirm {
+            background: #dc2626 !important;
+        }
+
+        .swal2-cancel {
+            background: #64748b !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-card">
+        <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+
+        <% if (typeof userdata !== 'undefined') { %>
+            <h2 class="admin-name">Hi <%= userdata.name %></h2>
+            <p class="admin-email"><%= userdata.email %></p>
+        <% } %>
+
+        <p class="message">Admin Dashboard</p>
+
+        <div class="button-group">
+            <button onclick="confirmLogout()" class="btn btn-logout">Log Out</button>
+            <a href="/AdminEdit" class="btn btn-cancel">USERS</a>
+        </div>
+    </div>
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to log out?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Logout',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'swal2-confirm',
+                    cancelButton: 'swal2-cancel'
+                },
+                buttonsStyling: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Logging out...',
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    }).then(() => {
+                        // Redirect to logout route
+                        window.location.href = '/logoutAdmin';
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

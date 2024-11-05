@@ -1,0 +1,82 @@
+<%- include("../header") %>
+
+<body class="d-flex justify-content-center align-items-center vh-100 homebody gradient-custom12">
+    <div class="card text-center shadow-lg text-white" style="width: 100%; max-width: 400px; background-color: rgba(0, 0, 0, 0.85);">
+        <div class="card-body">
+            <img src="https://img.icons8.com/ios/100/ffffff/logout-rounded-left.png" alt="Log Out Icon" class="mb-4">
+            
+            <% if (typeof logindataFromDatabase !== 'undefined') { %>
+                <h4 class="fw-bold mb-2">Hello, <%= logindataFromDatabase.name %>!</h4>
+            <% } %>
+            
+            <h5 class="card-title mt-3">Oh no! You're leaving...</h5>
+            <p class="card-text">Are you sure you want to log out?</p>
+            
+            <div class="d-flex justify-content-center mt-4">
+                <!-- Button triggers SweetAlert confirmation -->
+                <button id="logoutBtn" class="btn btn-outline-light mx-2">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include SweetAlert script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // SweetAlert confirmation on logout
+        document.getElementById("logoutBtn").addEventListener("click", function () {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will be logged out.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, log me out",
+                cancelButtonText: "Cancel",
+                background: "#333",
+                color: "#fff",
+                iconColor: "#f1c40f"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to logout
+                    window.location.href = "/logout";
+                }
+            });
+        });
+    </script>
+</body>
+
+<%- include('../footer') %>
+
+<style>
+    .gradient-custom12 {
+        background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+    }
+
+    .card {
+        background-color: rgba(0, 0, 0, 0.85);
+        border-radius: 15px;
+        padding: 1.5rem;
+    }
+
+    .btn {
+        border-color: #ffffff;
+        color: #ffffff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #ffffff;
+        color: #000;
+    }
+
+    .homebody {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+
+    .card.shadow-lg {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+</style>
