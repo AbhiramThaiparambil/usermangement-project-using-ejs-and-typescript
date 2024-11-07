@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 const isLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    if (req.session?.admin_id) { // Optional chaining to check if session exists
+    if (req.session?.admin_id) { 
       console.log("Admin is logged in, proceeding to the next middleware.");
       return next();
     } else {
@@ -11,7 +11,7 @@ const isLogin = async (req: Request, res: Response, next: NextFunction): Promise
     }
   } catch (error) {
     console.error("Error in isLogin middleware:", (error as Error).message);
-    return next(error); // Pass the error to the next middleware
+    return next(error); 
   }
 };
 
@@ -26,7 +26,7 @@ const isLogout = async (req: Request, res: Response, next: NextFunction): Promis
     }
   } catch (error) {
     console.error("Error in isLogout middleware:", (error as Error).message);
-    return next(error); // Pass the error to the next middleware
+    return next(error); 
   }
 };
 

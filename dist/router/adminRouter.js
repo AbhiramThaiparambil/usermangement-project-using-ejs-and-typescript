@@ -48,13 +48,13 @@ adminRoute.use((0, express_session_1.default)({
     cookie: { secure: false }
 }));
 // Route definitions
-adminRoute.get("/adminSignup", adminController.adminSignup); // Corrected to adminController
-adminRoute.post("/adminreg", adminController.regdata);
+adminRoute.get("/adminSignup", auth.isLogout, adminController.adminSignup); // Corrected to adminController
+adminRoute.post("/adminreg", auth.isLogout, adminController.regdata);
 adminRoute.get("/newuser", auth.isLogin, adminController.newuser);
 adminRoute.get("/adminLogin1", auth.isLogout, adminController.adminLoginLoad);
 adminRoute.post("/adminlogin", auth.isLogout, adminController.adminLogin);
-adminRoute.get("/Adminhome", adminController.adminhome);
-adminRoute.get("/AdminEdit", adminController.edit);
+adminRoute.get("/Adminhome", auth.isLogin, adminController.adminhome);
+adminRoute.get("/AdminEdit", auth.isLogin, adminController.edit);
 // adminRoute.get("/Adminhome2", adminController.adminhome2);
 adminRoute.get("/logoutAdmin", adminController.logout);
 adminRoute.post("/addNewuserdata", auth.isLogin, adminController.addnewUserData);

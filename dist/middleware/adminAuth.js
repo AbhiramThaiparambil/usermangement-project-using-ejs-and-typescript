@@ -13,7 +13,7 @@ exports.isLogout = exports.isLogin = void 0;
 const isLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        if ((_a = req.session) === null || _a === void 0 ? void 0 : _a.admin_id) { // Optional chaining to check if session exists
+        if ((_a = req.session) === null || _a === void 0 ? void 0 : _a.admin_id) {
             console.log("Admin is logged in, proceeding to the next middleware.");
             return next();
         }
@@ -24,7 +24,7 @@ const isLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         console.error("Error in isLogin middleware:", error.message);
-        return next(error); // Pass the error to the next middleware
+        return next(error);
     }
 });
 exports.isLogin = isLogin;
@@ -41,7 +41,7 @@ const isLogout = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (error) {
         console.error("Error in isLogout middleware:", error.message);
-        return next(error); // Pass the error to the next middleware
+        return next(error);
     }
 });
 exports.isLogout = isLogout;
